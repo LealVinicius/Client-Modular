@@ -2,7 +2,6 @@ package ManipulateFiles;
 
 import java.io.File;
 import java.util.Scanner;
-
 import Client.Intpos;
 
 public class Search {
@@ -11,8 +10,6 @@ public class Search {
 	Scanner sc = null;// new Scanner(file);
 	Intpos i = null;
 
-	// Lê diretório do arquivo e joga na variável file.
-	// instancia o Intpos e chama leArquivo();
 	public Search(String diretorio, Intpos intpos) {
 		try {
 			this.file = new File(diretorio);
@@ -20,68 +17,42 @@ public class Search {
 			System.out.println(e.toString());
 		}
 		this.i = intpos;
-		LeArquivo();
 	}
 
-	public void leResp() {
-		while (sc.hasNextLine()) {
-			System.out.println(sc.nextLine());
-		}
-	}
-
-	// joga o arquivo no Scanner
-	public void LeArquivo() {
-
+	public void leArquivo() {
 		try {
 			sc = new Scanner(file);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
-		buscaFinalizacao();
-		buscaValor();
+		buscaInf();
 	}
 
-	public String buscaNsu(String nsuuu) {
+	public void buscaInf() {
+		String parametro = null;
+		String conteudo = null;
 		while (sc.hasNextLine()) {
-			String nsu = sc.nextLine();
-			if (nsu.substring(0, 7).contentEquals("012-000")) {
-				String nsuu = nsu.substring(10, 19);
-				i.setNsu(nsu);
-				
-			} 
-		}
-		return nsuuu;
-	}
+			conteudo = sc.nextLine();
+			System.out.println(conteudo);
+			parametro = conteudo.substring(0, 7);
+			switch (parametro) {
 
-	public void buscaFinalizacao() {
-		while (sc.hasNextLine()) {
-			String iden = sc.nextLine();
-			// System.out.println(iden);
-			if (iden.substring(0, 7).equals("027-000")) {
-				String code = iden.substring(10, 40);
-				i.setFinalizacao(code);
+			case "003-000":
+				i.setValor(conteudo.substring(10, 15));
+				break;
+
+			case "027-000":
+				i.setFinalizacao(conteudo.substring(10, 40));
+				break;
+
+			case "012-000":
+				i.setNsu(conteudo.substring(10, 19));
+				break;
 			}
 		}
 
-		// System.out.println("027: " + i.getFinalizacao());
-
 	}
 
-	public void buscaValor() {
-		System.out.println("Entrou no método buscaValor sem while");
-		while (sc.hasNextLine()) {
-			System.out.println("Valor no método buscaValor: ");
-			String valor = sc.nextLine();
-			System.out.println("antes do if. Valor: " + valor);
-			if (valor.substring(0, 7).equals("003-000")) {
-				String FinalValue = valor.substring(10, 16);
 
-				i.setValor(FinalValue);
-				System.out.println(FinalValue);
-			}
-
-		}
-	}
 
 }

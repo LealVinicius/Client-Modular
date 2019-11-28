@@ -1,6 +1,6 @@
 package Client;
-
 public class Intpos {
+
 	private String id;
 	private String codFuncao;
 	private String header;
@@ -12,7 +12,6 @@ public class Intpos {
 	private String finalizacao;
 	private String CNPJ;
 	private String infoLivre;
-	
 	
 	public String getId() {
 		return this.id;
@@ -39,9 +38,7 @@ public class Intpos {
 		this.finalizacao = finalizacao;
 	}
 	public String getValor() {
-		System.out.println("valor = " + this.valor);
 		return valor;
-		
 	}
 	public void setValor(String valor) {
 		this.valor = valor;
@@ -64,7 +61,6 @@ public class Intpos {
 	public void setCodFuncao(String codFuncao) {
 		this.codFuncao = codFuncao;
 	}
-	
 	public String getHeader() {
 		return header;
 	}
@@ -83,8 +79,5 @@ public class Intpos {
 	public void setRegistroFinal(String registro) {
 		this.registroFinal = registro;
 	}
-	
-	
-	
-	
+
 }
