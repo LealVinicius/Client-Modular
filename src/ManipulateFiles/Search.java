@@ -6,26 +6,33 @@ import Client.Intpos;
 
 public class Search {
 
-	File file = null; // new File("C:\\Client\\Resp\\Intpos.001");
-	Scanner sc = null;// new Scanner(file);
+	File file = null; 
+	Scanner sc = null;
 	Intpos i = null;
 
 	public Search(String diretorio, Intpos intpos) {
 		try {
 			this.file = new File(diretorio);
+			
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 		this.i = intpos;
 	}
-
-	public void leArquivo() {
+	
+	public boolean leArquivo() {
 		try {
-			sc = new Scanner(file);
+			if(this.file.exists()) {
+				sc = new Scanner(file);
+				buscaInf();
+				file.delete();
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			System.out.println(e.toString());
+			return false;
 		}
-		buscaInf();
 	}
 
 	public void buscaInf() {
@@ -36,21 +43,18 @@ public class Search {
 			System.out.println(conteudo);
 			parametro = conteudo.substring(0, 7);
 			switch (parametro) {
-
 			case "003-000":
 				i.setValor(conteudo.substring(10, 15));
 				break;
-
 			case "027-000":
 				i.setFinalizacao(conteudo.substring(10, 40));
 				break;
-
 			case "012-000":
 				i.setNsu(conteudo.substring(10, 19));
 				break;
 			}
 		}
-
+		sc.close();
 	}
 
 

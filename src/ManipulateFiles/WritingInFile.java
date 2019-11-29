@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import Client.Intpos;
 
 public class WritingInFile {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		int escolha;
 		Intpos i = new Intpos();
@@ -17,15 +17,14 @@ public class WritingInFile {
 		i.setRegistroFinal("999-999 = 0");
 		i.setInfoLivre("565-008 = 1=");
 		i.setCNPJ("04988631000111");
-		
+
 		try {
 			FileWriter writer = new FileWriter("C:\\Client\\Req\\Intpos.tmp", true);
-			
+
 			escolha = Integer.parseInt(JOptionPane.showInputDialog(null,
 					"\n  Digite 0 para leitura do Resp" + "\n  Digite 1 para Funções adminstrativas  "
 							+ "\n  Digite 2 para Pagamento via cartão  " + "\n  Digite 3 para Confirmação  "
 							+ "\n  Digite 4 para Não confirmação  " + "\n  Digite 5 para Cancelamento  "));
-
 			if (escolha == 0) {
 				search.leArquivo();
 			}
@@ -45,20 +44,25 @@ public class WritingInFile {
 				writer.write("\n003-000 = " + i.getValor());
 				writer.write("\n" + i.getInfoLivre() + i.getCNPJ());
 				writer.write("\n" + i.getRegistroFinal() + "\n");
-			}
-			if (escolha == 3 || escolha == 4) {
-				if (escolha == 3) {
-					i.setCodFuncao("CNF");
-				} else {
-					i.setCodFuncao("NCN");
+				writer.close();
+				new File("C:\\Client\\Req\\Intpos.tmp").renameTo(new File("C:\\Client\\Req\\Intpos.001"));
+				
+				while(!search.leArquivo()) {
+					Thread.sleep(1500);
 				}
-				search.leArquivo();
+				/*
+				 * REGRA DE NEGOCIO
+				 */
+				i.setCodFuncao("CNF");
+				writer = new FileWriter("C:\\Client\\Req\\Intpos.tmp", true);
 				writer.write(i.getHeader() + i.getCodFuncao());
 				writer.write("\n" + i.getIdentificacao() + "1");
 				writer.write("\n003-000 = " + i.getValor());
 				writer.write("\n" + i.getInfoLivre() + i.getCNPJ());
 				writer.write("\n027-000 = " + i.getFinalizacao());
 				writer.write("\n" + i.getRegistroFinal() + "\n");
+				writer.close();
+				new File("C:\\Client\\Req\\Intpos.tmp").renameTo(new File("C:\\Client\\Req\\Intpos.001"));
 			}
 
 			if (escolha == 5) {
@@ -72,13 +76,11 @@ public class WritingInFile {
 				writer.write("\n999-999 = 0");
 			}
 			writer.close();
-			// Thread.sleep(5000);
+			 //Thread.sleep(5000);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		new File("C:\\Client\\Req\\Intpos.tmp").renameTo(new File("C:\\Client\\Req\\Intpos.001"));
 	}
-
-
 
 }
